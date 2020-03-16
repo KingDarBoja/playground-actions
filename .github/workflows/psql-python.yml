@@ -15,7 +15,7 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
+          POSTGRES_DB: sample
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - name: Checkout
@@ -33,4 +33,5 @@ jobs:
       - name: Check installed components for PostgreSQL
         run: |
           pg_isready
-          psql --host=localhost --dbname=postgres --username=postgres --password=postgres
+          cd sql/
+          psql -h localhost -d sample -U postgres -W postgres < sample-table.sql
