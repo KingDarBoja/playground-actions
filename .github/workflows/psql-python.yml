@@ -35,9 +35,11 @@ jobs:
           # use localhost for the host here because we are running the job on the VM.
           # If we were running the job on in a container this would be postgres
           POSTGRES_HOST: localhost
+          POSTGRES_PASSWORD: postgres
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
         run: |
           pg_isready
           cd sql/
-          psql -U postgres -d postgres
+          export POSTGRES_PASSWORD="postgres"
+          psql --host=localhost --dbname=postgres --username=postgres
           psql -U postgres -d postgres < sample-table.sql
