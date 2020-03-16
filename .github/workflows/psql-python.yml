@@ -33,4 +33,4 @@ jobs:
       - name: Check installed components for PostgreSQL
         run: |
           pg_isready
-          psql --host=localhost --dbname=postgres --username=postgres
+          psql --host=localhost --dbname=postgres --username=postgres --password=postgres
