@@ -34,4 +34,4 @@ jobs:
         run: |
           pg_isready
           cd sql/
-          psql -h localhost -d sample -U postgres -W postgres < sample-table.sql
+          psql -h localhost -d sample -U postgres --password=postgres < sample-table.sql
