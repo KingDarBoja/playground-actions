@@ -15,7 +15,7 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: sample
+          POSTGRES_DB: postgres
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - name: Checkout
@@ -31,7 +31,13 @@ jobs:
           sudo apt-get update
           sudo apt-get -y install libpq-dev postgresql-12 postgresql-client-12
       - name: Check installed components for PostgreSQL
+        env:
+          # use localhost for the host here because we are running the job on the VM.
+          # If we were running the job on in a container this would be postgres
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
         run: |
           pg_isready
           cd sql/
-          psql -h localhost -d sample -U postgres --password=postgres < sample-table.sql
+          psql -U postgres -d postgres
+          psql -U postgres -d postgres < sample-table.sql
